@@ -10,4 +10,4 @@ deploy:
 	python app.py
 
 vscode_pb:
-	python setup.py
+	python3 setup.py install clean
