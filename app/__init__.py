@@ -1,6 +1,5 @@
 from flask import Flask, request, render_template
-from run import TextPredictionModel
-
+from predict.predict.run import TextPredictionModel
 
 app = Flask(__name__)
 
@@ -22,7 +21,6 @@ def request_prediction():
     text = request.args.get('text')
     predictions = model.predict([text],top_k=1)
     return str(predictions)
-
 
 if __name__ == '__main__':
     app.run()
