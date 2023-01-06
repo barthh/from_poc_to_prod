@@ -1,4 +1,4 @@
-batch_size: 100
+batch_size: 32
 epochs: 5
 dense_dim: 64
 min_samples_per_label: 10

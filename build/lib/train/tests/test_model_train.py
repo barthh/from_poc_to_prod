@@ -40,8 +40,8 @@ class TestTrain(unittest.TestCase):
         params = {
                 "batch_size": 2,
                 "epochs": 1,
-                "dense_dim": 8,
-                "min_samples_per_label": 2,
+                "dense_dim": 64,
+                "min_samples_per_label": 10,
                 "verbose": 1
         }
 
@@ -56,4 +56,4 @@ class TestTrain(unittest.TestCase):
             )
 
         # assert that accuracy is equal to 1.0
-        self.assertEqual(accuracy, 0.5)
+        self.assertEqual(accuracy, 1.0)
