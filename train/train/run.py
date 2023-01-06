@@ -46,6 +46,8 @@ def train(dataset_path, train_conf, model_path, add_timestamp):
         preprocess_text=embed
     )
 
+    print("Number of train batches : ", dataset._get_num_train_batches())
+    
     logger.info(dataset)
 
     # TODO: CODE HERE
@@ -71,16 +73,16 @@ def train(dataset_path, train_conf, model_path, add_timestamp):
     
     # scores
     scores = model.evaluate(dataset.get_test_sequence().__getitem__(0),dataset.get_test_sequence().__getitem__(1), verbose=0)
-
+    
     print("Test Accuracy: {:.2f}".format(scores[1] * 100))
     
     # TODO: CODE HERE
     # create folder artefacts_path
-    os.mkdir(artefacts_path)
-        
+    os.makedirs(artefacts_path)
+    
     # # TODO: CODE HERE
     # # save model in artefacts folder, name model.h5
-    model.save(artefacts_path + "model.h5")
+    model.save(artefacts_path + "/model.h5")
     
     # # TODO: CODE HERE
     # # save train_conf used in artefacts_path/params.json

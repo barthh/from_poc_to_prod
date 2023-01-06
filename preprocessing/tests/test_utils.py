@@ -2,8 +2,7 @@ import unittest
 import pandas as pd
 from unittest.mock import MagicMock
 
-from preprocessing.preprocessing import utils_save_bart
-
+from preprocessing.preprocessing import utils
 
 class TestBaseTextCategorizationDataset(unittest.TestCase):
     def test__get_num_train_samples(self):
@@ -13,7 +12,7 @@ class TestBaseTextCategorizationDataset(unittest.TestCase):
         then with this mocked value, we can test other methods
         """
         # we instantiate a BaseTextCategorizationDataset object with batch_size = 20 and train_ratio = 0.8
-        base = utils_save_bart.BaseTextCategorizationDataset(20, 0.8)
+        base = utils.BaseTextCategorizationDataset(20, 0.8)
         # we mock _get_num_samples to return the value 100
         base._get_num_samples = MagicMock(return_value=100)
         # we assert that _get_num_train_samples will return 100 * train_ratio = 80
@@ -23,20 +22,16 @@ class TestBaseTextCategorizationDataset(unittest.TestCase):
         """
         same idea as what we did to test _get_num_train_samples
         """
-        # TODO: CODE HERE
-        
         # we instantiate a BaseTextCategorizationDataset object with batch_size = 20 and train_ratio = 0.8
-        base = utils_save_bart.BaseTextCategorizationDataset(20, 0.8)
+        base = utils.BaseTextCategorizationDataset(20, 0.8)
         # we mock _get_num_samples to return the value 100
         base._get_num_samples = MagicMock(return_value=100)
         # we assert that _get_num_train_batches will return floor((100 * train_ratio) / batch_size) = 4
         self.assertEqual(base._get_num_train_batches (), 4)
 
     def test__get_num_test_batches(self):
-        # TODO: CODE HERE
-        
         # we instantiate a BaseTextCategorizationDataset object with batch_size = 20 and train_ratio = 0.8
-        base = utils_save_bart.BaseTextCategorizationDataset(5, 0.8)
+        base = utils.BaseTextCategorizationDataset(5, 0.8)
         # we mock _get_num_samples to return the value 100
         base._get_num_samples = MagicMock(return_value=100)
         # we assert that _get_num_test_batches will return floor((100 * (1 - train_ratio)) / batch_size) = 4
@@ -45,27 +40,23 @@ class TestBaseTextCategorizationDataset(unittest.TestCase):
     def test_get_index_to_label_map(self):
         label_list = ["Dimitri", "Barthelemy", "Chloe"]
         label_map = {
-            "Dimitri": 0,
-            "Barthelemy": 1,
-            "Chloe": 2,
-            }
-        base = utils_save_bart.BaseTextCategorizationDataset(20, 0.8)
-        base._get_label_list = MagicMock(return_value = label_list)
-        self.assertEqual(base.get_index_to_label_map(), label_map)
-        
-    def test_index_to_label_and_label_to_index_are_identity(self):
-        label_map = {
-            "Dimitri": 0,
-            "Barthelemy": 1,
-            "Chloe": 2,
-            }
-        index_map = {
             0: "Dimitri",
             1: "Barthelemy",
             2: "Chloe",
             }
-        base = utils_save_bart.BaseTextCategorizationDataset(20, 0.8)
-        base._get_label_list = MagicMock(return_value = label_map)
+        base = utils.BaseTextCategorizationDataset(20, 0.8)
+        base._get_label_list = MagicMock(return_value = label_list)
+        self.assertEqual(base.get_index_to_label_map(), label_map)
+        
+    def test_index_to_label_and_label_to_index_are_identity(self):
+        label_list = ["Dimitri", "Barthelemy", "Chloe"]
+        index_map = {
+            "Dimitri": 0,
+            "Barthelemy": 1,
+            "Chloe": 2,
+            }
+        base = utils.BaseTextCategorizationDataset(20, 0.8)
+        base._get_label_list = MagicMock(return_value = label_list)
         self.assertEqual(base.get_label_to_index_map(), index_map)
         
     def test_to_indexes(self):
@@ -74,7 +65,7 @@ class TestBaseTextCategorizationDataset(unittest.TestCase):
         labels = ["python", "c++", "python", "python", "java", "c++"]
         index = [0, 1, 0, 0, 2, 1]
         
-        base = utils_save_bart.BaseTextCategorizationDataset(20, 0.8)
+        base = utils.BaseTextCategorizationDataset(20, 0.8)
         base._get_label_list = MagicMock(return_value = label_list)
         self.assertEqual(base.to_indexes(labels), index)
 
@@ -90,7 +81,7 @@ class TestLocalTextCategorizationDataset(unittest.TestCase):
             'title': ['title_1', 'title_2']
         }))
         # we instantiate a LocalTextCategorizationDataset (it'll use the mocked read_csv), and we load dataset
-        dataset = utils_save_bart.LocalTextCategorizationDataset.load_dataset("fake_path", 1)
+        dataset = utils.LocalTextCategorizationDataset.load_dataset("fake_path", 1)
         # we expect the data after loading to be like this
         expected = pd.DataFrame({
             'post_id': ['id_1'],
@@ -112,7 +103,7 @@ class TestLocalTextCategorizationDataset(unittest.TestCase):
             'title': ['title_1', 'title_2', 'title3']
         }))
         
-        base = utils_save_bart.LocalTextCategorizationDataset("fake_path", batch_size=1, min_samples_per_label=0)
+        base = utils.LocalTextCategorizationDataset("fake_path", batch_size=1, min_samples_per_label=0)
         self.assertEqual(base._get_num_samples(), 2)
 
     def test_get_train_batch_returns_expected_shape(self):
@@ -124,7 +115,7 @@ class TestLocalTextCategorizationDataset(unittest.TestCase):
             'title': ['title_1', 'title_2', 'title3']
         }))
         
-        base = utils_save_bart.LocalTextCategorizationDataset("fake_path", batch_size=1, min_samples_per_label=0)        
+        base = utils.LocalTextCategorizationDataset("fake_path", batch_size=1, min_samples_per_label=0)        
         num_classes = base.get_num_labels()
         
         self.assertEqual(base.get_train_batch()[1].shape, (1, num_classes))
@@ -140,7 +131,7 @@ class TestLocalTextCategorizationDataset(unittest.TestCase):
             'title': ['title_1', 'title_2', 'title3']
         }))
         
-        base = utils_save_bart.LocalTextCategorizationDataset("fake_path", batch_size=1, min_samples_per_label=0)        
+        base = utils.LocalTextCategorizationDataset("fake_path", batch_size=1, min_samples_per_label=0)        
         num_classes = base.get_num_labels()
         self.assertEqual(base.get_test_batch()[1].shape, (1, num_classes))
 

@@ -165,7 +165,7 @@ class LocalTextCategorizationDataset(BaseTextCategorizationDataset):
 
         assert self._get_num_train_batches() > 0
         assert self._get_num_test_batches() > 0
-
+                
         # TODO: CODE HERE
         # from self._dataset, compute the label list
         self._label_list = self._get_label_list()
