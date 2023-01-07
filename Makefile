@@ -9,5 +9,5 @@ tests:
 deploy:
 	python app.py
 
-vscode_pb:
+vscode_fix:
 	python3 setup.py install clean

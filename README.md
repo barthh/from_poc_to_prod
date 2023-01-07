@@ -42,7 +42,7 @@ make tests
 
 If you have any problems about **preprocessing not found**, please do :
 ```bash
-make vscode_pb
+make vscode_fix
 ```
 
 **Train model**
